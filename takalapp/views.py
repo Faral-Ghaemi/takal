@@ -52,18 +52,15 @@ def admin(request):
 
 @csrf_exempt
 def register(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         username1 = request.GET.get('phone')
         try:
             user1 = User.objects.get(username=username1)
             profile = models.Profile.objects.get(user=user1)
             token = profile.token
-            if profile.full_name == null:
+            if profile.full_name is None:
                 code = randrange(1000,9999)
-                user.save()
                 user1 = User.objects.get(username=username1)
-                profile = models.Profile.objects.create(user=user1,code=code,token=token)
-                profile.save()
                 api = KavenegarAPI('7279477839674A4370504F4D4B5547426A6B676E38347A32464F3430766A7841')
                 params = { 'sender' : '1000596446', 'receptor': username1, 'message' :'کاربر گرامی تکل، ضمن خوش آمدگویی، رمز یکبار مصرف شما '+str(code)+'می باشد ' }
                 response = api.sms_send( params)
