@@ -1,0 +1,136 @@
+from django.shortcuts import render, get_object_or_404, reverse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.views import generic
+from django.views.generic.list import ListView
+from . import models
+from django.template import loader
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
+from django.urls import reverse_lazy,reverse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from .serializers import UserSerializer
+from kavenegar import *
+from django.views.decorators.csrf import csrf_exempt
+import hashlib
+from random import randrange
+from datetime import date, timedelta
+
+# Create your views here.
+def admin(request):
+    today = date.today()
+
+    trips = models.Trip.objects.all()
+    todaytrips = models.Trip.objects.filter(date=today)
+    day1= models.Trip.objects.filter(date=today - timedelta(days=1))
+    day2= models.Trip.objects.filter(date=today - timedelta(days=2))
+    day3= models.Trip.objects.filter(date=today - timedelta(days=3))
+    day4= models.Trip.objects.filter(date=today - timedelta(days=4))
+    profiles=models.Profile.objects.all()
+    sum=0
+    for profile in profiles:
+        sum += int(profile.score)
+    users = User.objects.all().count()
+    username = request.user.username
+    context = {
+        'todaytrips': todaytrips,
+        'day1' : day1,
+        'day2' : day2,
+        'day3' : day3,
+        'day4' : day4,
+        'username': username,
+        'users': users,
+        'trips' : trips,
+        'today': today,
+        'scores': sum,
+    }
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render(context,request))
+
+@csrf_exempt
+def register(request):
+    if request.method == 'GET':
+        username1 = request.GET.get('phone')
+        try:
+            user1 = User.objects.get(username=username1)
+            profile = models.Profile.objects.get(user=user1)
+            token = profile.token
+            full_name = profile.full_name
+            weight = profile.weight
+            height = profile.height
+            age = profile.age
+            province = profile.province
+            sex = profile.sex
+            score = profile.score
+            code1 = randrange(1000,9999)
+            profile.code = code1
+            profile.save()
+            api = KavenegarAPI('7279477839674A4370504F4D4B5547426A6B676E38347A32464F3430766A7841')
+            params = { 'sender' : '1000596446', 'receptor': username1, 'message' :'کاربر گرامی تکل، ضمن خوش آمدگویی، رمز یکبار مصرف شما '+str(code1)+' می باشد ' }
+            response = api.sms_send( params)
+            return JsonResponse({'token': token,'code': code1,'mode': 1,'full_name': full_name,'weight': weight,'height': height,'age':age,'province': province,'sex':sex,'score':score})
+
+        except User.DoesNotExist:
+            user = User.objects.create_user(username=username1)
+            token1 = hashlib.md5(username1.encode())
+            token = token1.hexdigest()
+            code = randrange(1000,9999)
+            user.save()
+            user1 = User.objects.get(username=username1)
+            profile = models.Profile.objects.create(user=user1,code=code,token=token)
+            profile.save()
+            api = KavenegarAPI('7279477839674A4370504F4D4B5547426A6B676E38347A32464F3430766A7841')
+            params = { 'sender' : '1000596446', 'receptor': username1, 'message' :'کاربر گرامی تکل، ضمن خوش آمدگویی، رمز یکبار مصرف شما '+str(code)+'می باشد ' }
+            response = api.sms_send( params)
+            return JsonResponse({'token': token,'code': code,'mode': 0,})
+    else :
+        return HttpResponse("not post")
+
+@csrf_exempt
+def profile(request):
+    if request.method == 'GET':
+        form = request.GET
+        token = form.get('token')
+        try:
+            profile = models.Profile.objects.get(token=token)
+
+            profile.full_name = form.get('full_name')
+            profile.weight = form.get('weight')
+            profile.height = form.get('height')
+            profile.age = form.get('age')
+            profile.province = form.get('province')
+            profile.sex = form.get('sex')
+            profile.save()
+            return JsonResponse({'status': 1,})
+        except models.Profile.DoesNotExist:
+            return JsonResponse({'status': 0,})
+
+@csrf_exempt
+def trips(request):
+    if request.method == 'GET':
+        form = request.GET
+        token = form.get('token')
+        try:
+            profile = models.Profile.objects.get(token=token)
+            startpoint_lat = form.get('startpoint_lat')
+            startpoint_lng = form.get('startpoint_lng')
+
+            trip = models.Trip.objects.create(profile=profile,startpoint_lat=startpoint_lat,startpoint_lng=startpoint_lng)
+            trip.save()
+            return JsonResponse({'status': 1,})
+        except models.Profile.DoesNotExist:
+            return JsonResponse({'status': 0,})
+
+
+
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
