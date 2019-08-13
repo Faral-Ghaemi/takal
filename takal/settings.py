@@ -25,7 +25,7 @@ SECRET_KEY = '1uso3w89o$)kqelzvxm&(3kdsi0&n$-@rtx*n3f*ft9gjz@=&+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.takalapp.ir','takalapp.ir','localhost']
+ALLOWED_HOSTS = ['www.takalapp.ir','takalapp.ir','localhost','185.120.221.217']
 
 
 # Application definition
@@ -39,8 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'takalapp',
     'leaflet',
-    'rest_framework',
-    'djoser',
     'kavenegar'
 ]
 
@@ -75,12 +73,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'takal.wsgi.application'
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    )
-}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
