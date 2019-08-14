@@ -20,6 +20,7 @@ from random import randrange
 from datetime import date, timedelta
 from django.db.models import Avg, Count, Min, Sum
 # Create your views here.
+@login_required
 def admin(request):
     today = date.today()
 
@@ -40,7 +41,7 @@ def admin(request):
     todayoffers = models.Offer.objects.filter(date=today)
     products = models.Product.objects.all()
 
-    lasttrips = models.Trip.objects.order_by('-id')[:5]
+    lasttrips = models.Trip.objects.filter(endpoint_lat__isnull=False).order_by('-id')[:4]
     context = {
         'lasttrips': lasttrips,
         'todayoffers': todayoffers,
