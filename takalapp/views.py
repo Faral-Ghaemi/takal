@@ -36,9 +36,13 @@ def admin(request):
     username = request.user.username
 
     stores = models.Store.objects.all()
-    offers = models.Offer.objects.filter(date=today)
+    offers = models.Offer.objects.filter()
+    todayoffers = models.Offer.objects.filter(date=today)
     products = models.Product.objects.all()
+
+    lasttrips = models.Trip.objects.order_by('-id')[:5]
     context = {
+        'todayoffers': todayoffers,
         'products': products,
         'offers': offers,
         'stores': stores,

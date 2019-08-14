@@ -516,14 +516,14 @@
                                         <i class="icon-warning-sign"></i>
                                     </td>
                                     <td>تعداد سفارشات امروز</td>
-                                    <td> {{offers.count}}</td>
+                                    <td> {{todayoffers.count}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <i class="icon-envelope"></i>
                                     </td>
                                     <td>تعدا کل سفارشات</td>
-                                    <td> 45</td>
+                                    <td> {{offers.count}}</td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -542,79 +542,32 @@
                       <section class="panel">
                           <div class="panel-body progress-panel">
                               <div class="task-progress">
-                                  <h1>Work Progress</h1>
-                                  <p>Anjelina Joli</p>
+                                  <h1>کاربران برتر هفته</h1>
+                                  <p>بر اساس امتیاز</p>
                               </div>
-                              <div class="task-option">
+                              <!-- <div class="task-option">
                                   <select class="styled">
                                       <option>Anjelina Joli</option>
                                       <option>Tom Crouse</option>
                                       <option>Jhon Due</option>
                                   </select>
-                              </div>
+                              </div> -->
                           </div>
                           <table class="table table-hover personal-task">
                               <tbody>
+                              {{ for u in lasttrips }}
                               <tr>
-                                  <td>1</td>
+                                  <td>{{avgspeed}} k/m</td>
                                   <td>
-                                      Target Sell
+                                      {{ u.profile.full_name }}
                                   </td>
                                   <td>
-                                      <span class="badge bg-important">75%</span>
+                                      <span class="badge bg-info">{{u.score}}</span>
                                   </td>
-                                  <td>
-                                    <div id="work-progress1"></div>
-                                  </td>
+
                               </tr>
-                              <tr>
-                                  <td>2</td>
-                                  <td>
-                                      Product Delivery
-                                  </td>
-                                  <td>
-                                      <span class="badge bg-success">43%</span>
-                                  </td>
-                                  <td>
-                                      <div id="work-progress2"></div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>3</td>
-                                  <td>
-                                      Payment Collection
-                                  </td>
-                                  <td>
-                                      <span class="badge bg-info">67%</span>
-                                  </td>
-                                  <td>
-                                      <div id="work-progress3"></div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>4</td>
-                                  <td>
-                                      Work Progress
-                                  </td>
-                                  <td>
-                                      <span class="badge bg-warning">30%</span>
-                                  </td>
-                                  <td>
-                                      <div id="work-progress4"></div>
-                                  </td>
-                              </tr>
-                              <tr>
-                                  <td>5</td>
-                                  <td>
-                                      Delivery Pending
-                                  </td>
-                                  <td>
-                                      <span class="badge bg-primary">15%</span>
-                                  </td>
-                                  <td>
-                                      <div id="work-progress5"></div>
-                                  </td>
-                              </tr>
+                              {{ endfor }}
+                            
                               </tbody>
                           </table>
                       </section>
