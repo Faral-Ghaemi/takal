@@ -557,7 +557,7 @@
                               <tbody>
                               {{ for u in lasttrips }}
                               <tr>
-                                  <td>{{avgspeed}} k/m</td>
+                                  <td>{{u.avgspeed}} k/m</td>
                                   <td>
                                       {{ u.profile.full_name }}
                                   </td>
@@ -567,7 +567,7 @@
 
                               </tr>
                               {{ endfor }}
-                            
+
                               </tbody>
                           </table>
                       </section>
