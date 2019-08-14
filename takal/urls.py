@@ -19,10 +19,6 @@ from takalapp import views
 from rest_framework import routers
 
 
-
-router = routers.DefaultRouter()
-router.register('users', views.UserViewSet)
-
 urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
