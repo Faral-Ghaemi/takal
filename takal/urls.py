@@ -16,11 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from takalapp import views
-from rest_framework import routers
+
 
 
 urlpatterns = [
-    path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('a/', include('takalapp.urls'), name='takal'),
     path('api/register/', views.register, name='register'),
