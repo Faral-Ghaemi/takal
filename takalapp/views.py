@@ -51,13 +51,8 @@ def admin(request):
 
 @csrf_exempt
 def register(request):
-<<<<<<< HEAD
     if request.method == 'POST':
         username1 = request.POST.get('phone')
-=======
-    if request.method == 'GET':
-        username1 = request.GET.get('phone')
->>>>>>> ec2ac8ad014c945d203fc1660514561c7d373b5e
         try:
             user1 = User.objects.get(username=username1)
             profile = models.Profile.objects.get(user=user1)
