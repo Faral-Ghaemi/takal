@@ -42,6 +42,7 @@ def admin(request):
 
     lasttrips = models.Trip.objects.order_by('-id')[:5]
     context = {
+        'lasttrips': lasttrips,
         'todayoffers': todayoffers,
         'products': products,
         'offers': offers,
