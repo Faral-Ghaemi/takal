@@ -34,7 +34,14 @@ def admin(request):
     sum=models.Profile.objects.annotate(Count('score'))
     users = User.objects.all().count()
     username = request.user.username
+
+    stores = models.Store.objects.all()
+    offers = models.Offer.objects.filter(date=today)
+    products = models.Product.objects.all()
     context = {
+        'products': products,
+        'offers': offers,
+        'stores': stores,
         'todaytrips': todaytrips,
         'day1' : day1,
         'day2' : day2,

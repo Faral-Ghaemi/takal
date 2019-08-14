@@ -495,7 +495,7 @@
                       <section class="panel">
                           <div class="panel-body">
                               <a href="#" class="task-thumb">
-                                  <img src="{% static 'img/avatar1.jpg' %}" alt="">
+
                               </a>
                               <div class="task-thumb-details">
                                   <h1><a href="#">{{ username }}</a></h1>
@@ -508,29 +508,29 @@
                                     <td>
                                         <i class=" icon-tasks"></i>
                                     </td>
-                                    <td>New Task Issued</td>
-                                    <td> 02</td>
+                                    <td>تعداد فروشگاه ها</td>
+                                    <td> {{stores.count }}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <i class="icon-warning-sign"></i>
                                     </td>
-                                    <td>Task Pending</td>
-                                    <td> 14</td>
+                                    <td>تعداد سفارشات امروز</td>
+                                    <td> {{offers.count}}</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <i class="icon-envelope"></i>
                                     </td>
-                                    <td>Inbox</td>
+                                    <td>تعدا کل سفارشات</td>
                                     <td> 45</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <i class=" icon-bell-alt"></i>
                                     </td>
-                                    <td>New Notification</td>
-                                    <td> 09</td>
+                                    <td>تعداد محصولات قابل خرید با امتیاز</td>
+                                    <td> {{products.count}}</td>
                                 </tr>
                               </tbody>
                           </table>
