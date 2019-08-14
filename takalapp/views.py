@@ -24,7 +24,7 @@ def admin(request):
     today = date.today()
 
     trips = models.Trip.objects.all()
-    onlinetrips = models.Trip.objects.filter(endpoint_lat is None)
+    onlinetrips = models.Trip.objects.filter(endpoint_lat__isnull=True)
     todaytrips = models.Trip.objects.filter(date=today)
     day1= models.Trip.objects.filter(date=today - timedelta(days=1))
     day2= models.Trip.objects.filter(date=today - timedelta(days=2))
