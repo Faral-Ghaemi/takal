@@ -19,7 +19,7 @@ class Profile(models.Model):
 
 class Trip(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    date = models.DateField(default=django.utils.timezone.now)
+    date = models.DateField(auto_now_add=True)
     startpoint_lat = models.CharField(max_length=200)
     startpoint_lng = models.CharField(max_length=200)
     passeddistance = models.CharField(max_length=200,null=True,blank=True)
@@ -58,7 +58,7 @@ class Offer(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True, blank=True, verbose_name="محصول")
     store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="فروشگاه")
     number = models.IntegerField(default=1, verbose_name="تعداد")
-    date = models.DateField(default=django.utils.timezone.now, verbose_name="تاریخ")
+    date = models.DateField(auto_now_add=True, verbose_name="تاریخ")
     def __str__(self):
         return self.user.username
 
