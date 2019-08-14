@@ -19,13 +19,13 @@ class Profile(models.Model):
 
 class Trip(models.Model):
     profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    date = models.DateField(default=date.today())
+    date = models.DateField(default=django.utils.timezone.now)
     startpoint_lat = models.CharField(max_length=200)
     startpoint_lng = models.CharField(max_length=200)
     passeddistance = models.CharField(max_length=200,null=True,blank=True)
     burenedcalory = models.CharField(max_length=200,null=True,blank=True)
     avgspeed = models.CharField(max_length=200,null=True,blank=True)
-    score = models.IntegerField(max_length=200,null=True,blank=True)
+    score = models.IntegerField(null=True,blank=True)
     endpoint_lat = models.CharField(max_length=200,null=True,blank=True)
     endpoint_lng = models.CharField(max_length=200,null=True,blank=True)
 
@@ -38,7 +38,7 @@ class Store(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     store_lat = models.CharField(max_length=200)
     store_lng = models.CharField(max_length=200)
-    score = models.IntegerField(max_length=200)
+    score = models.IntegerField()
     phone = models.CharField(max_length=200)
 
     def __str__(self):
@@ -58,7 +58,7 @@ class Offer(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True, blank=True, verbose_name="محصول")
     store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="فروشگاه")
     number = models.IntegerField(default=1, verbose_name="تعداد")
-    date = models.DateField(default=date.today(), verbose_name="تاریخ")
+    date = models.DateField(default=django.utils.timezone.now, verbose_name="تاریخ")
     def __str__(self):
         return self.user.username
 
