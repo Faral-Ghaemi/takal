@@ -18,21 +18,20 @@ from django.views.decorators.csrf import csrf_exempt
 import hashlib
 from random import randrange
 from datetime import date, timedelta
-
+from django.db.models import Avg, Count, Min, Sum
 # Create your views here.
 def admin(request):
     today = date.today()
 
     trips = models.Trip.objects.all()
+    onlinetrips = models.Trip.objects.filter(endpoint_lat is None)
     todaytrips = models.Trip.objects.filter(date=today)
     day1= models.Trip.objects.filter(date=today - timedelta(days=1))
     day2= models.Trip.objects.filter(date=today - timedelta(days=2))
     day3= models.Trip.objects.filter(date=today - timedelta(days=3))
     day4= models.Trip.objects.filter(date=today - timedelta(days=4))
     profiles=models.Profile.objects.all()
-    sum=0
-    for profile in profiles:
-        sum += int(profile.score)
+    sum=models.Profile.objects.annotate(Count('score'))
     users = User.objects.all().count()
     username = request.user.username
     context = {
@@ -53,12 +52,12 @@ def admin(request):
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        username1 = request.GET.get('phone')
+        username1 = request.POST.get('phone')
         try:
             user1 = User.objects.get(username=username1)
             profile = models.Profile.objects.get(user=user1)
             token = profile.token
-            if profile.full_name == null:
+            if profile.full_name is None:
                 code = randrange(1000,9999)
                 user.save()
                 user1 = User.objects.get(username=username1)
@@ -101,8 +100,8 @@ def register(request):
 
 @csrf_exempt
 def profile(request):
-    if request.method == 'GET':
-        form = request.GET
+    if request.method == 'POST':
+        form = request.POST
         token = form.get('token')
         try:
             profile = models.Profile.objects.get(token=token)
@@ -120,8 +119,8 @@ def profile(request):
 
 @csrf_exempt
 def trips(request):
-    if request.method == 'GET':
-        form = request.GET
+    if request.method == 'POST':
+        form = request.POST
         token = form.get('token')
         try:
             profile = models.Profile.objects.get(token=token)
