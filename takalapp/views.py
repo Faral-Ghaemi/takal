@@ -4,8 +4,7 @@ from django.views import generic
 from django.views.generic.list import ListView
 from . import models
 from django.template import loader
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect, render_to_response
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 from django.urls import reverse_lazy,reverse
@@ -19,8 +18,11 @@ import hashlib
 from random import randrange
 from datetime import date, timedelta
 from django.db.models import Avg, Count, Min, Sum
+from django.template import RequestContext
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
-@login_required
+
+@login_required(login_url='/login/')
 def admin(request):
     today = date.today()
 
@@ -64,6 +66,22 @@ def admin(request):
     return HttpResponse(template.render(context,request))
 
 @csrf_exempt
+def login_user(request):
+    logout(request)
+    username = password = ''
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect('/a/')
+    return render_to_response('login.html')
+
+
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         username1 = request.POST.get('phone')
@@ -82,7 +100,11 @@ def register(request):
             weight = profile.weight
             height = profile.height
             age = profile.age
-            province = profile.province
+            province1 = profile.province
+            if province1 == "Tehran":
+                province = "1"
+            elif province1 == "Qazvin":
+                province = "0"
             sex = profile.sex
             score = profile.score
             code1 = randrange(1000,9999)
@@ -121,7 +143,10 @@ def profile(request):
             profile.weight = form.get('weight')
             profile.height = form.get('height')
             profile.age = form.get('age')
-            profile.province = form.get('province')
+            if form.get('province') == "1":
+                profile.province = "Tehran"
+            elif form.get('province') == "0":
+                profile.province = "Qazvin"
             profile.sex = form.get('sex')
             profile.save()
             return JsonResponse({'status': 1,})
