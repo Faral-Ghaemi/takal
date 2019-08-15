@@ -1,3 +1,7 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,18 +10,9 @@
     <meta name="description" content="">
     <meta name="author" content="Mosaddek">
     <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-    <link rel="shortcut icon" href="img/favicon.html">
+
 
     <title>FlatLab - Flat & Responsive Bootstrap Admin Template</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap-reset.css" rel="stylesheet">
-    <!--external css-->
-    <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <!-- Custom styles for this template -->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
@@ -25,16 +20,29 @@
     <script src="js/respond.min.js"></script>
     <![endif]-->
 </head>
-
   <body class="login-body">
 
     <div class="container">
 
-      <form class="form-signin" action="index.html">
+      {% if form.errors %}
+      <p>یوزر یا پسورد را اشتباه زدید</p>
+      {% endif %}
+
+      {% if next %}
+          {% if user.is_authenticated %}
+          <p>شما نمی توانید به این صفحه وارد شوید</p>
+          {% else %}
+          <center><p ">لطفا وارد شوید"</p></center>
+            {% endif %}
+          {% endif %}
+
+      <form class="form-signin" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+
         <h2 class="form-signin-heading">همین حالا وارد شوید</h2>
         <div class="login-wrap">
-            <input type="text" class="form-control" placeholder="نام کاربری" autofocus>
-            <input type="password" class="form-control" placeholder="کلمه عبور">
+            <input type="text" id="username" name="username" class="form-control" placeholder="نام کاربری" autofocus>
+            <input type="password" name="password" id="password" class="form-control" placeholder="کلمه عبور">
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> مرا به خاطر بسپار
                 <span class="pull-right"> <a href="#"> کلمه عبور را فراموش کرده اید؟</a></span>
@@ -61,3 +69,4 @@
 
   </body>
 </html>
+{% endblock %}

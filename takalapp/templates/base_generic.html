@@ -267,7 +267,7 @@
                             <li><a href="#"><i class=" icon-suitcase"></i>پروفایل</a></li>
                             <li><a href="#"><i class="icon-cog"></i> تنظیمات</a></li>
                             <li><a href="#"><i class="icon-bell-alt"></i> اعلام ها</a></li>
-                            <li><a href="login.html"><i class="icon-key"></i> خروج</a></li>
+                            <li><a href="{% url 'logout'%}?next={{request.path}}"><i class="icon-key"></i> خروج</a></li>
                         </ul>
                     </li>
                     <!-- user login dropdown end -->

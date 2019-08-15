@@ -57,7 +57,7 @@ class Offer(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="نام کاربری")
     product = models.ForeignKey(Product, on_delete=models.CASCADE,null=True, blank=True, verbose_name="محصول")
     store = models.ForeignKey(Store, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="فروشگاه")
-    score = models.IntegerField(default=1, verbose_name="تعداد")
+    score = models.IntegerField(default=1, verbose_name="امتیاز")
     date = models.DateField(auto_now_add=True, verbose_name="تاریخ")
     def __str__(self):
         return self.user.username
