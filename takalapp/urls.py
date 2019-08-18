@@ -3,4 +3,5 @@ from django.urls import path
 from . import views
 urlpatterns = [
     path('', views.admin, name='admin'),
+    path('store/', views.StoreCreate.as_view(), name='StoreCreate'),
 ]

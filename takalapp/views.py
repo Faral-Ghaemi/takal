@@ -165,17 +165,36 @@ def trips(request):
 
             trip = models.Trip.objects.create(profile=profile,startpoint_lat=startpoint_lat,startpoint_lng=startpoint_lng)
             trip.save()
+            return JsonResponse({'status': 1,'id':trip.id})
+        except models.Profile.DoesNotExist:
+            return JsonResponse({'status': 0,})
+
+@csrf_exempt
+def etrips(request):
+    if request.method == 'POST':
+        form = request.POST
+        token = form.get('token')
+        try:
+            profile = models.Profile.objects.get(token=token)
+            id = form.get('id')
+            trip = models.Trip.objects.get(id=id)
+            trip.passeddistance = form.get('passeddistance')
+            trip.burenedcalory = form.get('burenedcalory')
+            trip.avgspeed= form.get('avgspeed')
+            trip.score = trip.score + form.get('score')
+            trip.endpoint_lng = form.get('endpoint_lng')
+            trip.endpoint_lat = form.get('endpoint_lat')
+            trip.save()
             return JsonResponse({'status': 1,})
         except models.Profile.DoesNotExist:
             return JsonResponse({'status': 0,})
 
 
+class StoreCreate(LoginRequiredMixin,generic.CreateView):
+    model = models.Store
+    success_url = reverse_lazy('admin')
+    fields = ['name','owner','user','store_lat','store_lng','phone']
 
 
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
+    def form_valid(self, form):
+        return super().form_valid(form)

@@ -27,4 +27,5 @@ urlpatterns = [
     path('api/trips/', views.trips, name='trips'),
     path('accounts/', include('django.contrib.auth.urls') ,name='accounts'),
     path('login/', views.login_user, name="login"),
+
 ]
