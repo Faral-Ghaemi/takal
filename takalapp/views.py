@@ -169,6 +169,7 @@ def trips(request):
         except models.Profile.DoesNotExist:
             return JsonResponse({'status': 0,})
 
+
 @csrf_exempt
 def etrips(request):
     if request.method == 'POST':
