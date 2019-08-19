@@ -24,7 +24,8 @@ urlpatterns = [
     path('a/', include('takalapp.urls'), name='takal'),
     path('api/register/', views.register, name='register'),
     path('api/profile/', views.profile, name='profile'),
-    path('api/trips/', views.trips, name='trips'),
+    path('api/strips/', views.trips, name='strips'),
+    path('api/etrips/', views.endtrips, name='etrips'),
     path('accounts/', include('django.contrib.auth.urls') ,name='accounts'),
     path('login/', views.login_user, name="login"),
 
